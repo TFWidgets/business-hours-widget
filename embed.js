@@ -185,13 +185,12 @@ if (!clientId) {
     return;
 }
 
-// Нормализация clientId: удаляем расширение .js если присутствует
+// КРИТИЧЕСКИ ВАЖНО: убираем .js расширение
 if (clientId.endsWith('.js')) {
     clientId = clientId.slice(0, -3);
 }
 
 console.log(`[BusinessHoursWidget] Normalized clientId: ${clientId}`);
-
 
         // Добавляем стили один раз
         if (!document.querySelector('#business-hours-widget-styles')) {
