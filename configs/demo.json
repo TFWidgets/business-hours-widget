@@ -1,6 +1,6 @@
 {
   "businessName": "🛒 Our Store",
-  "timezone": "Europe/Prague",
+  "timezone": "+1",
   "icon": "🛒",
   "hours": [
     {"closed": true},
@@ -16,12 +16,11 @@
     "open": "Open",
     "closed": "Closed",
     "closesAt": "Closes at",
-    "timezone": "Prague Time"
+    "timezone": "Local Time"
   },
   "timezoneDisplay": {
     "show": true,
-    "format": "custom",
-    "template": "🕐 {label}: {time}"
+    "template": "🕐 {label}: {time} ({timezone})"
   },
   "styling": {
     "primaryColor": "#ea66bc",
