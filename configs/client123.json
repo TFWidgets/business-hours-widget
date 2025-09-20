@@ -1,36 +1,25 @@
 {
-  "businessName": "🌿 EcoStore",
-  "timezone": "America/New_York",
-  "icon": "🌱",
-  "hours": [
-    {"closed": true},
-    {"open": "08:00", "close": "20:00"},
-    {"open": "08:00", "close": "20:00"},
-    {"open": "08:00", "close": "20:00"},
-    {"open": "08:00", "close": "20:00"},
-    {"open": "08:00", "close": "21:00"},
-    {"open": "09:00", "close": "18:00"}
-  ],
-  "labels": {
-    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-    "open": "Open",
-    "closed": "Closed",
-    "closesAt": "Closing at",
-    "timezone": "EST"
-  },
-  "styling": {
-    "fontFamily": "'Poppins', sans-serif",
-    "maxWidth": "420px",
-    "primaryColor": "#10b981",
-    "secondaryColor": "#059669",
-    "borderRadius": "16px",
-    "shadow": "0 20px 60px rgba(16, 185, 129, 0.4)",
-    "businessNameSize": "1.8em",
-    "businessNameColor": "#f0fdf4",
-    "openColor": "#22c55e",
-    "closedColor": "#dc2626",
-    "tableBackground": "rgba(240, 253, 244, 0.95)",
-    "currentDayBackground": "rgba(16, 185, 129, 0.15)",
-    "badgeRadius": "30px"
-  }
+    "businessName": "Test Client 123 Business",
+    "timezone": "America/New_York",
+    "icon": "🏢",
+    "hours": [
+        {"closed": true},
+        {"open": "09:00", "close": "17:00"},
+        {"open": "09:00", "close": "17:00"}, 
+        {"open": "09:00", "close": "17:00"},
+        {"open": "09:00", "close": "17:00"},
+        {"open": "09:00", "close": "17:00"},
+        {"closed": true}
+    ],
+    "labels": {
+        "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+        "open": "Open",
+        "closed": "Closed",
+        "closesAt": "Closes at",
+        "timezone": "Local Time"
+    },
+    "styling": {
+        "primaryColor": "#2563eb",
+        "secondaryColor": "#1d4ed8"
+    }
 }
