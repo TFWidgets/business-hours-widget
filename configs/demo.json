@@ -4,18 +4,18 @@
   "timezone": "Europe/Paris",
   "hours": [
     { "closed": true },
-    { "open": "08:00", "close": "20:00" },
-    { "open": "08:00", "close": "20:00" },
-    { "open": "08:00", "close": "20:00" },
-    { "open": "08:00", "close": "20:00" },
-    { "open": "08:00", "close": "22:00" },
-    { "open": "09:00", "close": "22:00" }
+    { "closed": true },
+    { "closed": true },
+    { "closed": true },
+    { "closed": true },
+    { "closed": true },
+    { "closed": true }
   ],
   "labels": {
-    "open": "Open now",
-    "closed": "Closed",
-    "closesAt": "Closes at",
+    "open": "Открыто",
+    "closed": "Закрыто",
+    "closesAt": "Next opening: Check schedule",
     "timezone": "Время",
-    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+    "days": ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"]
   }
 }
