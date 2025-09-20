@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,19 +12,22 @@
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
         }
+        
         .demo-section {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto 60px auto;
             background: white;
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
+        
         .demo-title {
             font-size: 1.5em;
             margin-bottom: 20px;
             color: #333;
         }
+        
         .code-block {
             background: #f8f9fa;
             padding: 15px;
@@ -36,121 +38,71 @@
             margin: 15px 0;
             border-left: 4px solid #667eea;
         }
-        .widget-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
-        }
+        
         .widget-demo {
-            text-align: center;
-        }
-        .widget-demo h4 {
-            margin-bottom: 20px;
-            color: #4f46e5;
-        }
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .feature {
-            padding: 15px;
-            background: #f8fafc;
-            border-radius: 8px;
-            border-left: 4px solid #667eea;
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
         }
     </style>
 </head>
 <body>
     <div class="demo-section">
-        <h1 class="demo-title">🕐 Business Hours Widget Demo</h1>
-        <p>Smart widget for displaying business hours with automatic open/closed status detection and support for complex schedules.</p>
+        <h1 class="demo-title">⏰ Business Hours Widget Demo</h1>
+        <p>Виджет рабочего времени для отображения часов работы вашего бизнеса:</p>
         
         <div class="code-block">
 &lt;script src="https://business-hours-widget.tf-widgets.com/embed.js" data-id="demo"&gt;&lt;/script&gt;
         </div>
         
-        <div class="features">
-            <div class="feature">
-                <h4>⚡ Smart Status</h4>
-                <p>Automatic "Open/Closed/Opening Soon" detection</p>
-            </div>
-            <div class="feature">
-                <h4>🌍 Time Zones</h4>
-                <p>Works correctly with any timezone</p>
-            </div>
-            <div class="feature">
-                <h4>🌙 Overnight Shifts</h4>
-                <p>Supports schedules that go past midnight</p>
-            </div>
-            <div class="feature">
-                <h4>📅 Exceptions</h4>
-                <p>Holidays and special working days</p>
-            </div>
+        <!-- Demo widget -->
+        <div class="widget-demo">
+            <script src="./embed.js" data-id="demo"></script>
         </div>
     </div>
 
     <div class="demo-section">
-        <h2 class="demo-title">📋 Widget Examples</h2>
-        
-        <div class="widget-grid">
-            <div class="widget-demo">
-                <h4>☕ Coffee Shop</h4>
-                <script src="./embed.js" data-id="demo"></script>
-            </div>
-            
-            <div class="widget-demo">
-                <h4>🍽️ Restaurant with Break</h4>
-                <script src="./embed.js" data-id="restaurant"></script>
-            </div>
-            
-            <div class="widget-demo">
-                <h4>🚀 24/7 Service</h4>
-                <script src="./embed.js" data-id="24h-service"></script>
-            </div>
-        </div>
-    </div>
-
-    <div class="demo-section">
-        <h2 class="demo-title">🔧 How to Use</h2>
-        
-        <p><strong>1. Create a JSON configuration</strong> in the <code>configs/</code> folder:</p>
-        
-        <div class="code-block">
-{
-  "name": "Your Business",
-  "timezone": "Europe/Paris",
-  "locale": "en",
-  "format": "24h",
-  "hours": {
-    "monday": [{ "start": "09:00", "end": "18:00" }],
-    "tuesday": [{ "start": "09:00", "end": "18:00" }],
-    "wednesday": [{ "start": "09:00", "end": "18:00" }],
-    "thursday": [{ "start": "09:00", "end": "18:00" }],
-    "friday": [{ "start": "09:00", "end": "18:00" }],
-    "saturday": [],
-    "sunday": []
-  },
-  "exceptions": {
-    "2025-01-01": "closed"
-  },
-  "messages": {
-    "open": "Open now",
-    "closed": "Closed",
-    "openingSoon": "Opening soon"
-  }
-}
-        </div>
-        
-        <p><strong>2. Insert the script</strong> into your website:</p>
+        <h2 class="demo-title">📋 Как использовать</h2>
+        <p>1. Создайте конфигурационный файл в папке <code>configs/</code></p>
+        <p>2. Вставьте код на ваш сайт:</p>
         
         <div class="code-block">
 &lt;script src="https://business-hours-widget.tf-widgets.com/embed.js" data-id="your-client-id"&gt;&lt;/script&gt;
         </div>
+        
+        <p>3. Готово! Виджет автоматически загрузится с вашими настройками.</p>
+        
+        <h3>Пример конфигурации (configs/demo.json):</h3>
+        <div class="code-block">
+{
+  "businessName": "TF Coffee Shop",
+  "icon": "☕",
+  "timezone": "Europe/Paris",
+  "hours": [
+    { "closed": true },
+    { "open": "08:00", "close": "20:00" },
+    { "open": "08:00", "close": "20:00" },
+    { "open": "08:00", "close": "20:00" },
+    { "open": "08:00", "close": "20:00" },
+    { "open": "08:00", "close": "22:00" },
+    { "open": "09:00", "close": "22:00" }
+  ],
+  "labels": {
+    "open": "Open now",
+    "closed": "Closed",
+    "closesAt": "Closes at",
+    "timezone": "Время",
+    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+  }
+}
+        </div>
+    </div>
 
-        <p><strong>3. Done!</strong> The widget will automatically detect the current status and update every minute.</p>
+    <div class="demo-section">
+        <h2 class="demo-title">🔧 Пример клиентского виджета</h2>
+        <div class="widget-demo">
+            <script src="./embed.js" data-id="client123"></script>
+        </div>
     </div>
 </body>
 </html>
