@@ -24,9 +24,9 @@
     "template": "🕐 {label}: {time}"
   },
   "styling": {
-    "primaryColor": "#667eea",
+    "primaryColor": "#66ea94",
     "secondaryColor": "#764ba2",
-    "borderRadius": "20px",
+    "borderRadius": "200px",
     "businessNameSize": "1.6em",
     "fontFamily": "'Roboto', sans-serif"
   }
