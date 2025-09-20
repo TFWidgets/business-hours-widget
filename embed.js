@@ -217,7 +217,8 @@
         showLoading(container);
 
         // Загружаем конфигурацию с fallback
-        loadConfig(configUrl, baseUrl)
+        // Новое:
+        loadConfig(clientId, baseUrl)
             .then(config => {
                 applyCustomStyles(container, config);
                 createBusinessHoursWidget(container, config, clientId);
@@ -252,34 +253,38 @@
     }
 
     // Загрузка конфига с fallback на demo.json
-    async function loadConfig(configUrl, baseUrl) {
-        try {
-            const response = await fetch(configUrl, {
-                cache: 'no-cache',
-                headers: { 'Accept': 'application/json' }
-            });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
+    // Загружаем конфигурацию
+    async function loadConfig(clientId, baseUrl) {
+        if (clientId === 'local') {
+            // Ищем JSON на странице
+            const localScript = document.querySelector('#bhw-local-config');
+            if (!localScript) {
+                throw new Error('Локальный конфиг не найден на странице (#bhw-local-config)');
             }
-            
-            return await response.json();
-        } catch (error) {
-            console.warn(`[BusinessHoursWidget] Основной конфиг недоступен, используем demo: ${error.message}`);
-            
-            // Fallback на demo.json
-            const demoResponse = await fetch(`${baseUrl}/configs/demo.json?v=${Date.now()}`, {
-                cache: 'no-cache',
-                headers: { 'Accept': 'application/json' }
-            });
-            
-            if (!demoResponse.ok) {
-                throw new Error('Конфигурация недоступна');
+            try {
+                return JSON.parse(localScript.textContent);
+            } catch (err) {
+                throw new Error('Ошибка парсинга локального конфига: ' + err.message);
             }
-            
-            return await demoResponse.json();
+        } else {
+            // Обычный fetch
+            const configUrl = `${baseUrl}/configs/${encodeURIComponent(clientId)}.json?v=${Date.now()}`;
+            try {
+                const response = await fetch(configUrl, { cache: 'no-cache', headers: { 'Accept': 'application/json' } });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                return await response.json();
+            } catch (error) {
+                console.warn(`[BusinessHoursWidget] Основной конфиг недоступен, используем demo: ${error.message}`);
+                const demoResponse = await fetch(`${baseUrl}/configs/demo.json?v=${Date.now()}`, {
+                    cache: 'no-cache',
+                    headers: { 'Accept': 'application/json' }
+                });
+                if (!demoResponse.ok) throw new Error('Конфигурация недоступна');
+                return await demoResponse.json();
+            }
         }
     }
+
 
     // Применение кастомных стилей из конфига - РАСШИРЕННАЯ ВЕРСИЯ
     function applyCustomStyles(container, config) {
