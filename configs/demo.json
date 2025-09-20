@@ -1,1 +1,27 @@
 
+{
+    "name": "TF Coffee Shop",
+    "timezone": "Europe/Paris",
+    "locale": "en",
+    "format": "24h",
+    "hours": {
+        "monday": [{ "start": "08:00", "end": "20:00" }],
+        "tuesday": [{ "start": "08:00", "end": "20:00" }],
+        "wednesday": [{ "start": "08:00", "end": "20:00" }],
+        "thursday": [{ "start": "08:00", "end": "20:00" }],
+        "friday": [{ "start": "08:00", "end": "22:00" }],
+        "saturday": [{ "start": "09:00", "end": "22:00" }],
+        "sunday": []
+    },
+    "exceptions": {
+        "2025-01-01": "closed",
+        "2025-01-01_note": "New Year",
+        "2025-03-08": [{ "start": "10:00", "end": "16:00" }],
+        "2025-03-08_note": "International Women's Day"
+    },
+    "messages": {
+        "open": "Open now ☕",
+        "closed": "Closed",
+        "openingSoon": "Opening soon"
+    }
+}
