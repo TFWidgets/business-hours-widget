@@ -1,1 +1,29 @@
-
+{
+  "businessName": "🛍️ Shopify Store",
+  "timezone": "Europe/London",
+  "icon": "🛍️",
+  "hours": [
+    {"open": "10:00", "close": "18:00"},
+    {"open": "09:00", "close": "21:00"},
+    {"open": "09:00", "close": "21:00"},
+    {"open": "09:00", "close": "21:00"},
+    {"open": "09:00", "close": "21:00"},
+    {"open": "09:00", "close": "22:00"},
+    {"open": "10:00", "close": "20:00"}
+  ],
+  "labels": {
+    "days": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    "open": "We're Open!",
+    "closed": "Closed"
+  },
+  "styling": {
+    "primaryColor": "#10b981",
+    "secondaryColor": "#059669",
+    "borderRadius": "12px",
+    "businessNameSize": "1.5em",
+    "fontFamily": "'Inter', sans-serif",
+    "maxWidth": "350px",
+    "openColor": "#065f46",
+    "closedColor": "#ef4444"
+  }
+}
