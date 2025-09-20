@@ -4,12 +4,12 @@
   "icon": "🛒",
   "hours": [
     {"closed": true},
-    {"open": "09:00", "close": "18:00"},
-    {"open": "09:00", "close": "18:00"},
-    {"open": "09:00", "close": "18:00"},
-    {"open": "09:00", "close": "18:00"},
-    {"open": "09:00", "close": "20:00"},
-    {"open": "10:00", "close": "16:00"}
+    {"open": "06:00", "close": "18:00"},
+    {"open": "06:00", "close": "18:00"},
+    {"open": "07:00", "close": "18:00"},
+    {"open": "07:00", "close": "18:00"},
+    {"open": "07:00", "close": "20:00"},
+    {"open": "07:00", "close": "16:00"}
   ],
   "labels": {
     "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
@@ -24,9 +24,9 @@
     "template": "🕐 {label}: {time}"
   },
   "styling": {
-    "primaryColor": "#66ea94",
+    "primaryColor": "#ea66bc",
     "secondaryColor": "#764ba2",
-    "borderRadius": "200px",
+    "borderRadius": "20px",
     "businessNameSize": "1.6em",
     "fontFamily": "'Roboto', sans-serif"
   }
