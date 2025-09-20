@@ -1,0 +1,33 @@
+{
+  "businessName": "🛒 Our Store",
+  "timezone": "Europe/Prague",
+  "icon": "🛒",
+  "hours": [
+    {"closed": true},
+    {"open": "09:00", "close": "18:00"},
+    {"open": "09:00", "close": "18:00"},
+    {"open": "09:00", "close": "18:00"},
+    {"open": "09:00", "close": "18:00"},
+    {"open": "09:00", "close": "20:00"},
+    {"open": "10:00", "close": "16:00"}
+  ],
+  "labels": {
+    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "open": "Open",
+    "closed": "Closed",
+    "closesAt": "Closes at",
+    "timezone": "Prague Time"
+  },
+  "timezoneDisplay": {
+    "show": true,
+    "format": "custom",
+    "template": "🕐 {label}: {time}"
+  },
+  "styling": {
+    "primaryColor": "#667eea",
+    "secondaryColor": "#764ba2",
+    "borderRadius": "20px",
+    "businessNameSize": "1.6em",
+    "fontFamily": "'Roboto', sans-serif"
+  }
+}
