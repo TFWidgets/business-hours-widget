@@ -1,7 +1,7 @@
 (function() {
     'use strict';
 
-    // CSS стили для виджета рабочего времени
+    // CSS стили (ваши остаются без изменений)
     const inlineCSS = `
         .business-hours-widget-container {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -157,7 +157,6 @@
         }
 
         const configUrl = `${baseUrl}/configs/${encodeURIComponent(clientId)}.json`;
-        console.log('[BusinessHoursWidget] Загружаем конфигурацию:', configUrl);
 
         // Создаем контейнер и показываем загрузку
         const container = createContainer(currentScript, clientId);
@@ -165,7 +164,7 @@
             <div class="business-hours-widget">
                 <div class="loading">
                     <div style="width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.3); border-top: 3px solid white; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 15px;"></div>
-                    <div>Загрузка виджета...</div>
+                    <div>Загрузка...</div>
                 </div>
             </div>
             <style>@keyframes spin{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}</style>
@@ -178,16 +177,15 @@
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Конфигурация для ${clientId} не найдена (${response.status})`);
+                throw new Error(`Конфигурация не найдена (${response.status})`);
             }
             return response.json();
         })
         .then(config => {
-            console.log('[BusinessHoursWidget] Конфигурация загружена:', config);
             createBusinessHoursWidget(container, config, clientId);
         })
         .catch(error => {
-            console.error('[BusinessHoursWidget] Ошибка загрузки:', error);
+            console.error('[BusinessHoursWidget] Ошибка:', error);
             showError(container, clientId, error.message);
         });
 
@@ -205,8 +203,8 @@
 
     function createBusinessHoursWidget(container, config, clientId) {
         const now = new Date();
-        const currentDay = now.getDay(); // 0 = Sunday, 1 = Monday, etc.
-        const currentTime = now.getHours() * 60 + now.getMinutes(); // minutes from midnight
+        const currentDay = now.getDay();
+        const currentTime = now.getHours() * 60 + now.getMinutes();
         
         // Определяем статус (открыто/закрыто)
         const todayHours = config.hours[currentDay];
@@ -220,8 +218,9 @@
             closingTime = todayHours.close;
         }
 
+        // Используем русские названия дней по умолчанию
         const daysOfWeek = config.labels?.days || [
-            'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
+            'Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
         ];
 
         let hoursHTML = '';
@@ -229,7 +228,7 @@
             const isCurrent = index === currentDay;
             const dayName = daysOfWeek[index];
             const timeText = dayHours.closed ? 
-                (config.labels?.closed || 'Closed') : 
+                (config.labels?.closed || 'Закрыто') : 
                 `${dayHours.open}–${dayHours.close}`;
             
             hoursHTML += `
@@ -243,10 +242,10 @@
         container.innerHTML = `
             <div class="business-hours-widget">
                 <div class="widget-header">
-                    <h2 class="business-name">${config.businessName || 'Business Hours'}</h2>
+                    <h2 class="business-name">${config.businessName || 'Часы работы'}</h2>
                     <div class="status-badge ${isOpen ? '' : 'closed'}">
-                        ${isOpen ? '●' : '●'} ${isOpen ? (config.labels?.open || 'Open now') : (config.labels?.closed || 'Closed')}
-                        ${config.icon ? ` ${config.icon}` : ' ☕'}
+                        ● ${isOpen ? (config.labels?.open || 'Открыто') : (config.labels?.closed || 'Закрыто')}
+                        ${config.icon ? ` ${config.icon}` : ''}
                     </div>
                 </div>
                 
@@ -256,13 +255,13 @@
                 
                 ${isOpen && closingTime ? `
                     <div class="closing-info">
-                        ${config.labels?.closesAt || 'Closes at'} ${closingTime}
+                        ${config.labels?.closesAt || 'Закрываемся в'} ${closingTime}
                     </div>
                 ` : ''}
                 
                 ${config.timezone ? `
                     <div class="timezone-info">
-                        ${config.labels?.timezone || 'Time zone'}: ${config.timezone}
+                        ${config.labels?.timezone || 'Время'}: ${config.timezone}
                     </div>
                 ` : ''}
             </div>
@@ -277,12 +276,8 @@
     function showError(container, clientId, message) {
         container.innerHTML = `
             <div class="business-hours-widget error">
-                <h3 style="margin: 0 0 15px 0;">⏰ Виджет временно недоступен</h3>
+                <h3 style="margin: 0 0 15px 0;">⏰ Виджет недоступен</h3>
                 <p style="margin: 0; opacity: 0.9; font-size: 0.9em;">ID: ${clientId}</p>
-                <details style="margin-top: 15px;">
-                    <summary style="cursor: pointer; opacity: 0.8;">Подробности</summary>
-                    <p style="margin: 10px 0 0 0; font-size: 0.8em; opacity: 0.7;">${message}</p>
-                </details>
             </div>
         `;
     }
