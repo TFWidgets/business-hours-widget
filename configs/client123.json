@@ -1,25 +1,28 @@
 {
-    "businessName": "Test Client 123 Business",
-    "timezone": "America/New_York",
-    "icon": "🏢",
-    "hours": [
-        {"closed": true},
-        {"open": "09:00", "close": "17:00"},
-        {"open": "09:00", "close": "17:00"}, 
-        {"open": "09:00", "close": "17:00"},
-        {"open": "09:00", "close": "17:00"},
-        {"open": "09:00", "close": "17:00"},
-        {"closed": true}
-    ],
-    "labels": {
-        "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        "open": "Open",
-        "closed": "Closed",
-        "closesAt": "Closes at",
-        "timezone": "Local Time"
-    },
-    "styling": {
-        "primaryColor": "#2563eb",
-        "secondaryColor": "#1d4ed8"
-    }
+  "businessName": "🏢 Corporate Office",
+  "timezone": "America/New_York",
+  "icon": "🏢",
+  "hours": [
+    {"closed": true},
+    {"open": "08:00", "close": "17:00"},
+    {"open": "08:00", "close": "17:00"},
+    {"open": "08:00", "close": "17:00"},
+    {"open": "08:00", "close": "17:00"},
+    {"open": "08:00", "close": "18:00"},
+    {"closed": true}
+  ],
+  "labels": {
+    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    "open": "Open",
+    "closed": "Closed"
+  },
+  "styling": {
+    "primaryColor": "#1e40af",
+    "secondaryColor": "#1d4ed8",
+    "borderRadius": "8px",
+    "businessNameSize": "1.4em",
+    "fontFamily": "'Arial', sans-serif",
+    "openColor": "#059669",
+    "closedColor": "#dc2626"
+  }
 }
