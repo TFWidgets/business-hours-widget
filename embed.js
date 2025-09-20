@@ -187,10 +187,14 @@
             return;
         }
 
-        // КРИТИЧЕСКИ ВАЖНО: убираем .js расширение
+        // Убираем .js расширение
         if (clientId.endsWith('.js')) {
             clientId = clientId.slice(0, -3);
         }
+
+        // Проверяем, не обработан ли уже этот конкретный скрипт
+        if (currentScript.dataset.bhwMounted === '1') return;
+        currentScript.dataset.bhwMounted = '1';
 
         console.log(`[BusinessHoursWidget] Normalized clientId: ${clientId}`);
 
@@ -207,21 +211,18 @@
             currentScript.src.replace(/\/[^\/]*$/, '') : 
             'https://business-hours-widget.tf-widgets.com';
 
-        // URL конфига с кеш-бастером для мгновенных обновлений
-        const configUrl = `${baseUrl}/configs/${encodeURIComponent(clientId)}.json?v=${Date.now()}`;
-
-        // Создаем контейнер
-        const container = createContainer(currentScript, clientId);
+        // Создаем контейнер с уникальным классом
+        const uniqueClass = `bhw-${clientId}-${Date.now()}`;
+        const container = createContainer(currentScript, clientId, uniqueClass);
         
         // Показываем загрузку
         showLoading(container);
 
-        // Загружаем конфигурацию с fallback
-        // Новое:
+        // Загружаем конфигурацию
         loadConfig(clientId, baseUrl)
             .then(config => {
-                applyCustomStyles(container, config);
-                createBusinessHoursWidget(container, config, clientId);
+                applyCustomStyles(container, config, uniqueClass);
+                createBusinessHoursWidget(container, config, uniqueClass);
                 console.log(`[BusinessHoursWidget] Виджет ${clientId} успешно создан`);
             })
             .catch(error => {
@@ -233,10 +234,10 @@
         console.error('[BusinessHoursWidget] Критическая ошибка:', error);
     }
 
-    function createContainer(scriptElement, clientId) {
+    function createContainer(scriptElement, clientId, uniqueClass) {
         const container = document.createElement('div');
         container.id = `business-hours-widget-${clientId}`;
-        container.className = 'bhw-container';
+        container.className = `bhw-container ${uniqueClass}`;
         scriptElement.parentNode.insertBefore(container, scriptElement.nextSibling);
         return container;
     }
@@ -252,11 +253,9 @@
         `;
     }
 
-    // Загрузка конфига с fallback на demo.json
-    // Загружаем конфигурацию
+    // Загрузка конфигурации
     async function loadConfig(clientId, baseUrl) {
         if (clientId === 'local') {
-            // Ищем JSON на странице
             const localScript = document.querySelector('#bhw-local-config');
             if (!localScript) {
                 throw new Error('Локальный конфиг не найден на странице (#bhw-local-config)');
@@ -267,7 +266,6 @@
                 throw new Error('Ошибка парсинга локального конфига: ' + err.message);
             }
         } else {
-            // Обычный fetch
             const configUrl = `${baseUrl}/configs/${encodeURIComponent(clientId)}.json?v=${Date.now()}`;
             try {
                 const response = await fetch(configUrl, { cache: 'no-cache', headers: { 'Accept': 'application/json' } });
@@ -285,114 +283,54 @@
         }
     }
 
-
-    // Применение кастомных стилей из конфига - РАСШИРЕННАЯ ВЕРСИЯ
-    function applyCustomStyles(container, config) {
+    // Применение кастомных стилей с уникальным классом
+    function applyCustomStyles(container, config, uniqueClass) {
         const s = config.styling || {};
-        const rootStyle = container.style;
         
-        // Основные стили контейнера
-        if (s.fontFamily) rootStyle.setProperty('--bhw-font', s.fontFamily);
-        if (s.maxWidth) rootStyle.setProperty('--bhw-max-width', s.maxWidth);
-        if (s.margin) rootStyle.setProperty('--bhw-margin', s.margin);
-        
-        // Градиент или цвет фона виджета
-        if (s.primaryColor && s.secondaryColor) {
-            rootStyle.setProperty('--bhw-bg', `linear-gradient(135deg, ${s.primaryColor} 0%, ${s.secondaryColor} 100%)`);
-        } else if (s.backgroundColor) {
-            rootStyle.setProperty('--bhw-bg', s.backgroundColor);
-        }
-        
-        // Основные стили виджета
-        if (s.borderRadius) rootStyle.setProperty('--bhw-radius', s.borderRadius);
-        if (s.padding) rootStyle.setProperty('--bhw-padding', s.padding);
-        if (s.shadow) rootStyle.setProperty('--bhw-shadow', s.shadow);
-        if (s.textColor) rootStyle.setProperty('--bhw-text-color', s.textColor);
-        if (s.overlay) rootStyle.setProperty('--bhw-overlay', s.overlay);
-        
-        // Заголовок
-        if (s.headerAlign) rootStyle.setProperty('--bhw-header-align', s.headerAlign);
-        if (s.headerMarginBottom) rootStyle.setProperty('--bhw-header-margin-bottom', s.headerMarginBottom);
-        if (s.businessNameSize) rootStyle.setProperty('--bhw-name-size', s.businessNameSize);
-        if (s.businessNameWeight) rootStyle.setProperty('--bhw-name-weight', s.businessNameWeight);
-        if (s.businessNameColor) rootStyle.setProperty('--bhw-name-color', s.businessNameColor);
-        if (s.businessNameShadow) rootStyle.setProperty('--bhw-name-shadow', s.businessNameShadow);
-        if (s.businessNameMarginBottom) rootStyle.setProperty('--bhw-name-margin-bottom', s.businessNameMarginBottom);
-        
-        // Статус бейдж
-        if (s.openColor) rootStyle.setProperty('--bhw-open-color', s.openColor);
-        if (s.closedColor) rootStyle.setProperty('--bhw-closed-color', s.closedColor);
-        if (s.badgeTextColor) rootStyle.setProperty('--bhw-badge-text', s.badgeTextColor);
-        if (s.badgePadding) rootStyle.setProperty('--bhw-badge-padding', s.badgePadding);
-        if (s.badgeRadius) rootStyle.setProperty('--bhw-badge-radius', s.badgeRadius);
-        if (s.badgeWeight) rootStyle.setProperty('--bhw-badge-weight', s.badgeWeight);
-        if (s.badgeSize) rootStyle.setProperty('--bhw-badge-size', s.badgeSize);
-        if (s.badgeGap) rootStyle.setProperty('--bhw-badge-gap', s.badgeGap);
-        
-        // Таблица часов работы
-        if (s.tableBackground) rootStyle.setProperty('--bhw-table-bg', s.tableBackground);
-        if (s.tableRadius) rootStyle.setProperty('--bhw-table-radius', s.tableRadius);
-        if (s.tablePadding) rootStyle.setProperty('--bhw-table-padding', s.tablePadding);
-        if (s.tableTextColor) rootStyle.setProperty('--bhw-table-text', s.tableTextColor);
-        if (s.tableMargin) rootStyle.setProperty('--bhw-table-margin', s.tableMargin);
-        if (s.tableBackdropFilter) rootStyle.setProperty('--bhw-table-backdrop-filter', s.tableBackdropFilter);
-        
-        // Строки таблицы
-        if (s.rowPadding) rootStyle.setProperty('--bhw-row-padding', s.rowPadding);
-        if (s.rowBorder) rootStyle.setProperty('--bhw-row-border', s.rowBorder);
-        if (s.currentDayBackground) rootStyle.setProperty('--bhw-current-bg', s.currentDayBackground);
-        if (s.currentDayRadius) rootStyle.setProperty('--bhw-current-radius', s.currentDayRadius);
-        if (s.currentDayPadding) rootStyle.setProperty('--bhw-current-padding', s.currentDayPadding);
-        if (s.currentDayMargin) rootStyle.setProperty('--bhw-current-margin', s.currentDayMargin);
-        if (s.currentDayWeight) rootStyle.setProperty('--bhw-current-day-weight', s.currentDayWeight);
-        
-        // Текст в таблице
-        if (s.dayWeight) rootStyle.setProperty('--bhw-day-weight', s.dayWeight);
-        if (s.daySize) rootStyle.setProperty('--bhw-day-size', s.daySize);
-        if (s.dayColor) rootStyle.setProperty('--bhw-day-color', s.dayColor);
-        if (s.timeWeight) rootStyle.setProperty('--bhw-time-weight', s.timeWeight);
-        if (s.timeColor) rootStyle.setProperty('--bhw-time-color', s.timeColor);
-        if (s.timeSize) rootStyle.setProperty('--bhw-time-size', s.timeSize);
-        if (s.closedTextColor) rootStyle.setProperty('--bhw-closed-text', s.closedTextColor);
-        if (s.closedTimeStyle) rootStyle.setProperty('--bhw-closed-time-style', s.closedTimeStyle);
-        
-        // Информационный блок
-        if (s.infoBackground) rootStyle.setProperty('--bhw-info-bg', s.infoBackground);
-        if (s.infoPadding) rootStyle.setProperty('--bhw-info-padding', s.infoPadding);
-        if (s.infoRadius) rootStyle.setProperty('--bhw-info-radius', s.infoRadius);
-        if (s.infoWeight) rootStyle.setProperty('--bhw-info-weight', s.infoWeight);
-        if (s.infoMarginBottom) rootStyle.setProperty('--bhw-info-margin-bottom', s.infoMarginBottom);
-        if (s.infoColor) rootStyle.setProperty('--bhw-info-color', s.infoColor);
-        
-        // Блок часового пояса
-        if (s.timezoneSize) rootStyle.setProperty('--bhw-tz-size', s.timezoneSize);
-        if (s.timezoneColor) rootStyle.setProperty('--bhw-tz-color', s.timezoneColor);
-        if (s.timezoneOpacity) rootStyle.setProperty('--bhw-tz-opacity', s.timezoneOpacity);
-        if (s.timezoneMarginTop) rootStyle.setProperty('--bhw-tz-margin-top', s.timezoneMarginTop);
-        
-        // Состояния загрузки и ошибки
-        if (s.loadingPadding) rootStyle.setProperty('--bhw-loading-padding', s.loadingPadding);
-        if (s.loadingTextColor) rootStyle.setProperty('--bhw-loading-text-color', s.loadingTextColor);
-        if (s.spinnerBorder) rootStyle.setProperty('--bhw-spinner-border', s.spinnerBorder);
-        if (s.spinnerTopBorder) rootStyle.setProperty('--bhw-spinner-top-border', s.spinnerTopBorder);
-        if (s.spinnerMargin) rootStyle.setProperty('--bhw-spinner-margin', s.spinnerMargin);
-        if (s.errorBackground) rootStyle.setProperty('--bhw-error-bg', s.errorBackground);
-        if (s.errorPadding) rootStyle.setProperty('--bhw-error-padding', s.errorPadding);
-        if (s.errorRadius) rootStyle.setProperty('--bhw-error-radius', s.errorRadius);
-        if (s.errorTextColor) rootStyle.setProperty('--bhw-error-text', s.errorTextColor);
-        if (s.errorShadow) rootStyle.setProperty('--bhw-error-shadow', s.errorShadow);
-        
-        // Мобильные стили
-        if (s.paddingMobile) rootStyle.setProperty('--bhw-padding-mobile', s.paddingMobile);
-        if (s.tablePaddingMobile) rootStyle.setProperty('--bhw-table-padding-mobile', s.tablePaddingMobile);
-        if (s.nameSizeMobile) rootStyle.setProperty('--bhw-name-size-mobile', s.nameSizeMobile);
+        // Создаем уникальные стили для этого виджета
+        const styleElement = document.createElement('style');
+        styleElement.textContent = generateUniqueStyles(uniqueClass, s);
+        container.appendChild(styleElement);
     }
 
-    function createBusinessHoursWidget(container, config, clientId) {
-        // Получаем текущее время с учетом часового пояса
-        const { dayIndex, minutesNow } = getTimeInTimezone(config.timezone);
+    function generateUniqueStyles(uniqueClass, styling) {
+        const s = styling;
+        const background = s.primaryColor && s.secondaryColor ? 
+            `linear-gradient(135deg, ${s.primaryColor} 0%, ${s.secondaryColor} 100%)` : 
+            (s.backgroundColor || 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)');
+
+        return `
+            .${uniqueClass} {
+                font-family: ${s.fontFamily || 'inherit'};
+            }
+            
+            .${uniqueClass} .bhw-widget {
+                background: ${background};
+                border-radius: ${s.borderRadius || '20px'};
+                padding: ${s.padding || '30px'};
+                color: ${s.textColor || 'white'};
+            }
+            
+            .${uniqueClass} .bhw-business-name {
+                font-size: ${s.businessNameSize || '1.6em'};
+            }
+            
+            @media (max-width: 480px) {
+                .${uniqueClass} .bhw-widget {
+                    padding: ${s.paddingMobile || '20px'};
+                }
+                .${uniqueClass} .bhw-business-name {
+                    font-size: ${s.nameSizeMobile || '1.4em'};
+                }
+            }
+        `;
+    }
+
+    function createBusinessHoursWidget(container, config, uniqueClass) {
+        // Получаем текущее время с учетом UTC смещения
+        const { dayIndex, minutesNow } = getTimeWithUTCOffset(config.timezone);
         
-        // Определяем статус (открыто/закрыто) с поддержкой работы через полночь
+        // Определяем статус (открыто/закрыто)
         const todayHours = config.hours[dayIndex];
         let isOpen = false;
         let closingTime = '';
@@ -401,12 +339,10 @@
             const openTime = parseTime(todayHours.open);
             const closeTime = parseTime(todayHours.close);
             
-            // Учитываем случай, когда заведение закрывается на следующий день (например, 22:00-02:00)
+            // Учитываем случай работы через полночь
             if (closeTime < openTime) {
-                // Работает через полночь
                 isOpen = minutesNow >= openTime || minutesNow < closeTime;
             } else {
-                // Обычный режим работы в пределах одного дня
                 isOpen = minutesNow >= openTime && minutesNow < closeTime;
             }
             closingTime = todayHours.close;
@@ -417,7 +353,7 @@
             'Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'
         ];
 
-        // Генерируем HTML строк с использованием лейблов из конфига
+        // Генерируем HTML строк
         const hoursHTML = config.hours.map((dayHours, index) => {
             const isCurrent = index === dayIndex;
             const dayName = daysOfWeek[index] || `День ${index}`;
@@ -455,77 +391,96 @@
                 ${generateTimezoneDisplay(config)}
             </div>
         `;
+
+        // Применяем уникальные стили после создания HTML
+        applyCustomStyles(container, config, uniqueClass);
     }
 
-    // НОВАЯ ФУНКЦИЯ: Генерация отображения часового пояса
-    function generateTimezoneDisplay(config) {
-        // Проверяем базовые условия
-        if (!config.timezone) return '';
-        
-        const timezoneConfig = config.timezoneDisplay || {};
-        
-        // Если явно отключено
-        if (timezoneConfig.show === false) return '';
-        
-        // Определяем шаблон для отображения
-        let template = '';
-        const format = timezoneConfig.format || 'default';
-        
-        switch (format) {
-            case 'timezone-only':
-                template = '{timezone}';
-                break;
-                
-            case 'custom':
-                template = timezoneConfig.template || '{label}: {timezone}';
-                break;
-                
-            case 'current-time':
-                template = '{label}: {time}';
-                break;
-                
-            case 'time-and-zone':
-                template = '{label}: {time} ({timezone})';
-                break;
-                
-            case 'none':
-                return '';
-                
-            default:
-                // Обратная совместимость с существующим форматом
-                template = '{label}: {timezone}';
-                break;
+    // ===== НОВЫЕ ФУНКЦИИ ДЛЯ UTC СМЕЩЕНИЙ =====
+
+    // Парсинг UTC смещения - поддерживает: "+3", "-2", "+5:30", "UTC+3", "GMT-7", "0"
+    function parseUTCOffset(offset) {
+        if (!offset && offset !== 0) return null;
+
+        // Если передано число
+        if (typeof offset === 'number') {
+            return Math.round(offset * 60); // Часы в минуты
         }
+
+        const str = String(offset).trim().toUpperCase();
         
-        // Получаем значения для подстановки
-        const label = config.labels?.timezone || 'Время';
-        const timezone = config.timezone;
-        const currentTime = getCurrentTimeInTimezone(config.timezone);
+        // Особые случаи
+        if (str === '0' || str === 'UTC' || str === 'GMT' || str === 'Z') {
+            return 0;
+        }
+
+        // Парсим формат: [UTC|GMT][+|-]HH[:MM]
+        const match = str.match(/^(?:UTC|GMT)?([+-]?)(\d{1,2})(?::(\d{2}))?$/);
+        if (!match) {
+            throw new Error(`Неподдерживаемый формат UTC смещения: ${offset}`);
+        }
+
+        const [, sign = '+', hours, minutes = '0'] = match;
+        const totalMinutes = parseInt(hours) * 60 + parseInt(minutes);
         
-        // Выполняем подстановку плейсхолдеров
-        const displayText = template
-            .replace('{label}', label)
-            .replace('{timezone}', timezone)
-            .replace('{time}', currentTime);
-        
-        return `
-            <div class="bhw-timezone-info">
-                ${escapeHtml(displayText)}
-            </div>
-        `;
+        return sign === '-' ? -totalMinutes : totalMinutes;
     }
 
-    // НОВАЯ ФУНКЦИЯ: Получение текущего времени в часовом поясе
-    function getCurrentTimeInTimezone(timezone) {
+    // Получение времени с UTC смещением
+    function getTimeWithUTCOffset(timezoneOffset) {
         try {
+            const offsetMinutes = parseUTCOffset(timezoneOffset);
+            
+            if (offsetMinutes === null) {
+                // Если смещение не указано, используем локальное время
+                const now = new Date();
+                return { 
+                    dayIndex: now.getDay(), 
+                    minutesNow: now.getHours() * 60 + now.getMinutes() 
+                };
+            }
+
+            // Получаем UTC время и применяем смещение
             const now = new Date();
-            const formatter = new Intl.DateTimeFormat('ru-RU', {
-                timeZone: timezone,
-                hour: '2-digit',
+            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const targetTime = new Date(utcTime + (offsetMinutes * 60000));
+            
+            return {
+                dayIndex: targetTime.getDay(),
+                minutesNow: targetTime.getHours() * 60 + targetTime.getMinutes()
+            };
+        } catch (error) {
+            console.warn('[BusinessHoursWidget] Ошибка обработки timezone, используем локальное время:', error);
+            const now = new Date();
+            return { 
+                dayIndex: now.getDay(), 
+                minutesNow: now.getHours() * 60 + now.getMinutes() 
+            };
+        }
+    }
+
+    // Получение текущего времени с UTC смещением (строка HH:MM)
+    function getCurrentTimeWithUTCOffset(timezoneOffset) {
+        try {
+            const offsetMinutes = parseUTCOffset(timezoneOffset);
+            
+            if (offsetMinutes === null) {
+                return new Date().toLocaleTimeString('ru-RU', { 
+                    hour: '2-digit', 
+                    minute: '2-digit',
+                    hour12: false 
+                });
+            }
+
+            const now = new Date();
+            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const targetTime = new Date(utcTime + (offsetMinutes * 60000));
+            
+            return targetTime.toLocaleTimeString('ru-RU', { 
+                hour: '2-digit', 
                 minute: '2-digit',
-                hour12: false
+                hour12: false 
             });
-            return formatter.format(now);
         } catch (error) {
             console.warn('[BusinessHoursWidget] Ошибка получения времени:', error);
             return new Date().toLocaleTimeString('ru-RU', { 
@@ -536,46 +491,52 @@
         }
     }
 
-    // Получение времени с учетом часового пояса
-    function getTimeInTimezone(timezone) {
-        if (!timezone) {
-            const now = new Date();
-            return { 
-                dayIndex: now.getDay(), 
-                minutesNow: now.getHours() * 60 + now.getMinutes() 
-            };
-        }
-
+    // Форматирование UTC смещения для отображения
+    function formatUTCOffset(offset) {
         try {
-            const now = new Date();
-            const formatter = new Intl.DateTimeFormat('en-US', {
-                timeZone: timezone,
-                hour: '2-digit',
-                minute: '2-digit',
-                weekday: 'short',
-                hour12: false
-            });
+            const offsetMinutes = parseUTCOffset(offset);
             
-            const parts = formatter.formatToParts(now);
-            const hours = parseInt(parts.find(p => p.type === 'hour')?.value || '0');
-            const minutes = parseInt(parts.find(p => p.type === 'minute')?.value || '0');
-            const weekday = parts.find(p => p.type === 'weekday')?.value?.toLowerCase();
+            if (offsetMinutes === null || offsetMinutes === 0) {
+                return 'UTC+0';
+            }
+
+            const sign = offsetMinutes >= 0 ? '+' : '-';
+            const absMinutes = Math.abs(offsetMinutes);
+            const hours = Math.floor(absMinutes / 60);
+            const minutes = absMinutes % 60;
             
-            const dayMap = { sun: 0, mon: 1, tue: 2, wed: 3, thu: 4, fri: 5, sat: 6 };
-            const dayIndex = dayMap[weekday?.slice(0, 3)] ?? now.getDay();
-            
-            return { 
-                dayIndex, 
-                minutesNow: hours * 60 + minutes 
-            };
+            if (minutes === 0) {
+                return `UTC${sign}${hours}`;
+            } else {
+                return `UTC${sign}${hours}:${minutes.toString().padStart(2, '0')}`;
+            }
         } catch (error) {
-            console.warn('[BusinessHoursWidget] Ошибка timezone, используем локальное время:', error);
-            const now = new Date();
-            return { 
-                dayIndex: now.getDay(), 
-                minutesNow: now.getHours() * 60 + now.getMinutes() 
-            };
+            return String(offset || 'UTC');
         }
+    }
+
+    // Генерация отображения часового пояса
+    function generateTimezoneDisplay(config) {
+        if (!config.timezone && config.timezone !== 0) return '';
+        
+        const timezoneConfig = config.timezoneDisplay || {};
+        if (timezoneConfig.show === false) return '';
+        
+        const template = timezoneConfig.template || '🕐 {label}: {time} ({timezone})';
+        const label = config.labels?.timezone || 'Время';
+        const timezone = formatUTCOffset(config.timezone);
+        const currentTime = getCurrentTimeWithUTCOffset(config.timezone);
+        
+        const displayText = template
+            .replace('{label}', label)
+            .replace('{timezone}', timezone)
+            .replace('{time}', currentTime);
+        
+        return `
+            <div class="bhw-timezone-info">
+                ${escapeHtml(displayText)}
+            </div>
+        `;
     }
 
     function parseTime(timeStr) {
