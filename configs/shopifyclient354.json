@@ -1,29 +1,26 @@
 {
-  "businessName": "🛍️ Shopify Store",
-  "timezone": "Europe/London",
-  "icon": "🛍️",
+  "businessName": "⚕️ МедЦентр",
+  "timezone": "Europe/Moscow",
+  "icon": "⚕️",
   "hours": [
-    {"open": "10:00", "close": "18:00"},
-    {"open": "09:00", "close": "21:00"},
-    {"open": "09:00", "close": "21:00"},
-    {"open": "09:00", "close": "21:00"},
-    {"open": "09:00", "close": "21:00"},
-    {"open": "09:00", "close": "22:00"},
-    {"open": "10:00", "close": "20:00"}
+    {"closed": true},
+    {"open": "08:00", "close": "20:00"},
+    {"open": "08:00", "close": "20:00"},
+    {"open": "08:00", "close": "20:00"},
+    {"open": "08:00", "close": "20:00"},
+    {"open": "08:00", "close": "18:00"},
+    {"open": "09:00", "close": "16:00"}
   ],
   "labels": {
-    "days": ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-    "open": "We're Open!",
-    "closed": "Closed"
+    "days": ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
+    "open": "Принимаем",
+    "closed": "Закрыто"
+  },
+  "timezoneDisplay": {
+    "show": false
   },
   "styling": {
-    "primaryColor": "#10b981",
-    "secondaryColor": "#059669",
-    "borderRadius": "12px",
-    "businessNameSize": "1.5em",
-    "fontFamily": "'Inter', sans-serif",
-    "maxWidth": "350px",
-    "openColor": "#065f46",
-    "closedColor": "#ef4444"
+    "primaryColor": "#2c5aa0",
+    "secondaryColor": "#1abc9c"
   }
 }
