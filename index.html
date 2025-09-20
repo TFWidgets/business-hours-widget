@@ -1,108 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Hours Widget Demo</title>
+    <title>Business Hours Widget</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            padding: 40px 20px;
+            padding: 20px;
             background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             min-height: 100vh;
-        }
-        
-        .demo-section {
-            max-width: 800px;
-            margin: 0 auto 60px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        
-        .demo-title {
-            font-size: 1.5em;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        
-        .code-block {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: 'Monaco', 'Consolas', monospace;
-            font-size: 0.9em;
-            overflow-x: auto;
-            margin: 15px 0;
-            border-left: 4px solid #667eea;
-        }
-        
-        .widget-demo {
             display: flex;
+            align-items: center;
             justify-content: center;
-            margin: 30px 0;
+        }
+        
+        .widget-container {
+            max-width: 420px;
+            width: 100%;
         }
     </style>
 </head>
 <body>
-    <div class="demo-section">
-        <h1 class="demo-title">⏰ Business Hours Widget Demo</h1>
-        <p>Виджет рабочего времени для отображения часов работы вашего бизнеса:</p>
-        
-        <div class="code-block">
-&lt;script src="https://business-hours-widget.tf-widgets.com/embed.js" data-id="demo"&gt;&lt;/script&gt;
-        </div>
-        
-        <!-- Demo widget -->
-        <div class="widget-demo">
-            <script src="./embed.js" data-id="demo"></script>
-        </div>
-    </div>
-
-    <div class="demo-section">
-        <h2 class="demo-title">📋 Как использовать</h2>
-        <p>1. Создайте конфигурационный файл в папке <code>configs/</code></p>
-        <p>2. Вставьте код на ваш сайт:</p>
-        
-        <div class="code-block">
-&lt;script src="https://business-hours-widget.tf-widgets.com/embed.js" data-id="your-client-id"&gt;&lt;/script&gt;
-        </div>
-        
-        <p>3. Готово! Виджет автоматически загрузится с вашими настройками.</p>
-        
-        <h3>Пример конфигурации (configs/demo.json):</h3>
-        <div class="code-block">
-{
-  "businessName": "TF Coffee Shop",
-  "icon": "☕",
-  "timezone": "Europe/Paris",
-  "hours": [
-    { "closed": true },
-    { "open": "08:00", "close": "20:00" },
-    { "open": "08:00", "close": "20:00" },
-    { "open": "08:00", "close": "20:00" },
-    { "open": "08:00", "close": "20:00" },
-    { "open": "08:00", "close": "22:00" },
-    { "open": "09:00", "close": "22:00" }
-  ],
-  "labels": {
-    "open": "Open now",
-    "closed": "Closed",
-    "closesAt": "Closes at",
-    "timezone": "Время",
-    "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-  }
-}
-        </div>
-    </div>
-
-    <div class="demo-section">
-        <h2 class="demo-title">🔧 Пример клиентского виджета</h2>
-        <div class="widget-demo">
-            <script src="./embed.js" data-id="client123"></script>
-        </div>
+    <div class="widget-container">
+        <script src="./embed.js" data-id="demo"></script>
     </div>
 </body>
 </html>
