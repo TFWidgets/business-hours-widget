@@ -1,34 +1,33 @@
 {
-  "businessName": "🏢 Corporate Office",
-  "timezone": "America/New_York",
-  "icon": "🏢",
+  "businessName": "🛒 Our Store",
+  "timezone": "Europe/Prague",
+  "icon": "🛒",
   "hours": [
     {"closed": true},
-    {"open": "08:00", "close": "17:00"},
-    {"open": "08:00", "close": "17:00"},
-    {"open": "08:00", "close": "17:00"},
-    {"open": "08:00", "close": "17:00"},
-    {"open": "08:00", "close": "18:00"},
-    {"closed": true}
+    {"open": "06:00", "close": "18:00"},
+    {"open": "06:00", "close": "18:00"},
+    {"open": "07:00", "close": "18:00"},
+    {"open": "07:00", "close": "18:00"},
+    {"open": "07:00", "close": "20:00"},
+    {"open": "07:00", "close": "16:00"}
   ],
   "labels": {
     "days": ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
     "open": "Open",
     "closed": "Closed",
     "closesAt": "Closes at",
-    "timezone": "Local Time"
+    "timezone": "Prague Time"
   },
   "timezoneDisplay": {
     "show": true,
-    "format": "time-and-zone"
+    "format": "custom",
+    "template": "🕐 {label}: {time}"
   },
   "styling": {
-    "primaryColor": "#1e40af",
-    "secondaryColor": "#1d4ed8",
-    "borderRadius": "8px",
-    "businessNameSize": "1.4em",
-    "fontFamily": "'Arial', sans-serif",
-    "openColor": "#059669",
-    "closedColor": "#dc2626"
+    "primaryColor": "#ea66bc",
+    "secondaryColor": "#764ba2",
+    "borderRadius": "20px",
+    "businessNameSize": "1.6em",
+    "fontFamily": "'Roboto', sans-serif"
   }
 }
