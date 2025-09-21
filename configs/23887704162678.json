@@ -54,7 +54,7 @@
   },
   "styling": {
     "primaryColor": "#66ea94",
-    "secondaryColor": "#764ba2",
+    "secondaryColor": "#ff2600",
     "borderRadius": "20px",
     "businessNameSize": "1.6em",
     "fontFamily": "'Roboto', sans-serif"
