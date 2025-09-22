@@ -53,8 +53,8 @@
     "template": "🕐 {label}: {time}"
   },
   "styling": {
-    "primaryColor": "#66ea94",
-    "secondaryColor": "#ff2600",
+    "primaryColor": "#e32400",
+    "secondaryColor": "#d29d00",
     "borderRadius": "20px",
     "businessNameSize": "1.6em",
     "fontFamily": "'Roboto', sans-serif"
