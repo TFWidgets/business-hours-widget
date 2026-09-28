@@ -1,0 +1,82 @@
+{
+  "active": true,
+  "domains": [
+    "cdpn.io"
+  ],
+  "widget": "hours",
+  "order": "#1013",
+  "site": "s16j5dtz4",
+  "layout": "card",
+  "businessName": "Opening hours",
+  "icon": "🕘",
+  "logo": "",
+  "notice": "",
+  "timezone": "Europe/Moscow",
+  "locale": "en",
+  "timeFormat": "24h",
+  "weekStart": "mon",
+  "groupDays": false,
+  "showTimezone": false,
+  "closingSoonMinutes": 30,
+  "style": {
+    "fontFamily": "'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif",
+    "colors": {
+      "background": "#101114",
+      "text": "#f4f4f5",
+      "accent": "#4ade80",
+      "open": "#4ade80",
+      "soon": "#d97706",
+      "closed": "#f87171",
+      "widgetBorder": "rgba(244, 244, 245, 0.1)",
+      "tableBackground": "rgba(244, 244, 245, 0.06)",
+      "tableText": "inherit",
+      "todayBackground": "#28292c",
+      "rowLine": "rgba(244, 244, 245, 0.1)",
+      "soft": "rgba(244, 244, 245, 0.09)"
+    },
+    "borderRadius": {
+      "widget": 22,
+      "blocks": 14
+    },
+    "sizes": {
+      "fontSize": 1,
+      "padding": 26,
+      "width": 400
+    },
+    "shadow": {
+      "widget": "0 24px 60px -24px rgba(0, 0, 0, 0.3)",
+      "text": "none"
+    }
+  },
+  "hours": [
+    {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    {
+      "open": "09:00",
+      "close": "18:00"
+    },
+    {
+      "open": "10:00",
+      "close": "14:00"
+    }
+  ],
+  "specialDays": []
+}
